@@ -1,0 +1,29 @@
+<html>
+  <head>
+    <title>SockJS example</title>
+    <script src="http://cdn.sockjs.org/sockjs-0.2.min.js"></script>
+    <script type="text/javascript" src="vertxbus.js"></script>
+    <style>
+#logs {
+  font-family: monospace;
+  font-size: 10pt;
+}
+    </style>
+  </head>
+  <body>
+    <h1>Realtime logs</h1>
+    <script>
+
+      var eb = new vertx.EventBus("http://localhost:8181/eventbus");
+      eb.onopen = function() {
+        eb.registerHandler("logs", function(msg, replyTo) {
+          var logs = document.getElementById('logs')
+          logs.appendChild(document.createTextNode(msg.text));
+          logs.appendChild(document.createElement('br'));
+          window.scroll(0, document.height);
+        });
+      };
+    </script>
+    <div id="logs"></div>
+  </body>
+</html>
